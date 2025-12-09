@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'EcoProvider - Berita Lingkungan')
+@section('title', 'Eco News - Berita Lingkungan')
 
 @section('content')
 <!-- Hero Section -->
 <div class="bg-gradient-to-r from-green-600 to-green-800 text-white rounded-lg shadow-lg p-8 mb-8">
-    <h1 class="text-4xl font-bold mb-4">Berita Lingkungan Terkini</h1>
-    <p class="text-lg">Informasi terbaru tentang lingkungan, pengelolaan sampah, dan teknologi hijau</p>
+    <h1 class="text-4xl font-bold mb-4">🌿 Berita Lingkungan Terkini</h1>
+    <p class="text-lg">Baca informasi seputar lingkungan hidup dan keberlanjutan</p>
 </div>
 
 <!-- Search & Filter Section -->
 <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-    <form action="{{ route('home') }}" method="GET" class="space-y-4">
+    <form action="{{ route('eco-news-search') }}" method="GET" class="space-y-4">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <!-- Search Input -->
             <div class="md:col-span-2">
-                <label for="search" class="block text-sm font-medium text-gray-700 mb-2">Cari Berita</label>
+                <label for="search" class="block text-sm font-medium text-gray-700 mb-2">🔍 Cari Berita</label>
                 <input 
                     type="text" 
                     name="search" 
@@ -28,7 +28,7 @@
 
             <!-- Category Filter -->
             <div>
-                <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
+                <label for="category" class="block text-sm font-medium text-gray-700 mb-2">📂 Kategori</label>
                 <select 
                     name="category" 
                     id="category"
@@ -53,7 +53,7 @@
                 Cari Berita
             </button>
             <a 
-                href="{{ route('home') }}"
+                href="{{ route('eco-news-search') }}"
                 class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-semibold"
             >
                 Reset
@@ -83,7 +83,7 @@
     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
         <!-- Thumbnail -->
         @if($item->thumbnail_url)
-            <img src="{{ asset('storage/' . $item->thumbnail_url) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover">
+            <img src="{{ url('storage/' . $item->thumbnail_url) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover" onerror="this.parentElement.innerHTML='<div class=\'w-full h-48 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center\'><span class=\'text-white text-4xl\'>🌱</span></div>'">
         @else
             <div class="w-full h-48 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
                 <span class="text-white text-4xl">🌱</span>
@@ -107,9 +107,11 @@
 
             <!-- Date & Read More -->
             <div class="flex justify-between items-center">
-                <span class="text-sm text-gray-500">{{ $item->published_at->format('d M Y') }}</span>
+                <span class="text-sm text-gray-500">
+                    📅 {{ $item->published_at->format('d M Y') }}
+                </span>
                 <a href="{{ route('news.show', $item->id) }}" class="text-green-600 hover:text-green-800 font-semibold">
-                    Baca Selengkapnya →
+                    Baca →
                 </a>
             </div>
         </div>
@@ -127,6 +129,21 @@
 @if($news->hasPages())
 <div class="mt-8">
     {{ $news->appends(request()->query())->links() }}
+</div>
+@endif
+
+<!-- Info Banner -->
+@if($news->isEmpty() && !request('search') && !request('category'))
+<div class="mt-8 p-6 bg-yellow-50 border border-yellow-200 rounded-lg">
+    <div class="flex items-start">
+        <div class="text-3xl mr-4">⚠️</div>
+        <div>
+            <h3 class="font-bold text-yellow-800 mb-2">Perhatian!</h3>
+            <p class="text-yellow-700">
+                Layanan EcoProvider sedang tidak tersedia. Silakan coba lagi nanti.
+            </p>
+        </div>
+    </div>
 </div>
 @endif
 @endsection

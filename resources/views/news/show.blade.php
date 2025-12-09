@@ -4,15 +4,27 @@
 
 @section('content')
 <!-- Breadcrumb -->
-<div class="mb-6">
+<div class="mb-6 flex justify-between items-center">
     <a href="{{ route('home') }}" class="text-green-600 hover:text-green-800">← Kembali ke Beranda</a>
+    <div class="flex gap-3">
+        <a href="{{ route('news.edit', $news->id) }}" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold">
+            ✏️ Edit Berita
+        </a>
+        <form action="{{ route('news.destroy', $news->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus berita ini?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold">
+                🗑️ Hapus
+            </button>
+        </form>
+    </div>
 </div>
 
 <!-- Article Container -->
 <article class="bg-white rounded-lg shadow-lg overflow-hidden">
     <!-- Thumbnail -->
     @if($news->thumbnail_url)
-        <img src="{{ $news->thumbnail_url }}" alt="{{ $news->title }}" class="w-full h-96 object-cover">
+        <img src="{{ asset('storage/' . $news->thumbnail_url) }}" alt="{{ $news->title }}" class="w-full h-96 object-cover">
     @else
         <div class="w-full h-96 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
             <span class="text-white text-6xl">🌱</span>
@@ -80,7 +92,7 @@
         @foreach($relatedNews as $related)
         <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
             @if($related->thumbnail_url)
-                <img src="{{ $related->thumbnail_url }}" alt="{{ $related->title }}" class="w-full h-32 object-cover">
+                <img src="{{ asset('storage/' . $related->thumbnail_url) }}" alt="{{ $related->title }}" class="w-full h-32 object-cover">
             @else
                 <div class="w-full h-32 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
                     <span class="text-white text-2xl">🌱</span>
