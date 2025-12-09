@@ -16,9 +16,6 @@
                     <a href="{{ route('home') }}" class="hover:text-green-200">Home</a>
                     <a href="{{ route('news.index') }}" class="hover:text-green-200">Admin Panel</a>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <span class="text-sm">Admin Dashboard</span>
-                </div>
             </div>
         </div>
     </nav>

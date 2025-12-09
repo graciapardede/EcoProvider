@@ -68,14 +68,48 @@
 
             <!-- Thumbnail -->
             <div class="mb-6">
-                <label for="thumbnail" class="block text-sm font-medium text-gray-700 mb-2">Thumbnail (Opsional)</label>
+                <label for="thumbnail" class="block text-sm font-medium text-gray-700 mb-2">Upload Gambar Berita (Opsional)</label>
+                
+                <!-- Preview Area -->
+                <div id="imagePreview" class="mb-4 hidden">
+                    <p class="text-sm text-gray-600 mb-2 font-medium">Preview Gambar:</p>
+                    <div class="relative inline-block">
+                        <img id="preview" src="" alt="Preview" class="w-64 h-40 object-cover rounded-lg border-2 border-green-500">
+                        <button type="button" onclick="removeImage()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600">
+                            ×
+                        </button>
+                    </div>
+                </div>
+
+                <!-- File Input -->
                 <input type="file" name="thumbnail" id="thumbnail" accept="image/*" 
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 @error('thumbnail') border-red-500 @enderror">
-                <p class="text-sm text-gray-500 mt-1">Format: JPG, PNG, GIF (Max 2MB)</p>
+                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 @error('thumbnail') border-red-500 @enderror"
+                       onchange="previewImage(event)">
+                <p class="text-sm text-gray-500 mt-1">Format: JPG, PNG, GIF | Maksimal: 2MB | Ukuran rekomendasi: 1200x800px</p>
                 @error('thumbnail')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
+
+            <script>
+            function previewImage(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('preview').src = e.target.result;
+                        document.getElementById('imagePreview').classList.remove('hidden');
+                    }
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            function removeImage() {
+                document.getElementById('thumbnail').value = '';
+                document.getElementById('imagePreview').classList.add('hidden');
+                document.getElementById('preview').src = '';
+            }
+            </script>
 
             <!-- Published At -->
             <div class="mb-6">
