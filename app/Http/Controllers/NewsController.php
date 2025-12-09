@@ -9,6 +9,34 @@ use Illuminate\Support\Facades\Storage;
 class NewsController extends Controller
 {
     /**
+     * Display homepage with news and search functionality.
+     */
+    public function home(Request $request)
+    {
+        $query = News::query()->orderBy('published_at', 'desc');
+
+        // Filter by search keyword
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('summary', 'like', "%{$search}%")
+                  ->orWhere('content', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter by category
+        if ($request->has('category') && $request->category) {
+            $query->where('category', $request->category);
+        }
+
+        $news = $query->paginate(9);
+        $categories = News::distinct()->pluck('category');
+
+        return view('home', compact('news', 'categories'));
+    }
+
+    /**
      * Display a listing of the news.
      */
     public function index()

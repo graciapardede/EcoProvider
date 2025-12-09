@@ -67,24 +67,74 @@
                 @enderror
             </div>
 
-            <!-- Current Thumbnail -->
-            @if($news->thumbnail_url)
+            <!-- Thumbnail Section -->
             <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Thumbnail Saat Ini</label>
-                <img src="{{ asset('storage/' . $news->thumbnail_url) }}" alt="Current Thumbnail" class="w-48 h-32 object-cover rounded-lg">
-            </div>
-            @endif
+                <label class="block text-sm font-medium text-gray-700 mb-2">Gambar Berita</label>
+                
+                <!-- Current Thumbnail -->
+                <div id="currentImage" class="mb-4 {{ $news->thumbnail_url ? '' : 'hidden' }}">
+                    <p class="text-sm text-gray-600 mb-2 font-medium">Gambar Saat Ini:</p>
+                    <div class="relative inline-block">
+                        @if($news->thumbnail_url)
+                        <img id="currentThumb" src="{{ asset('storage/' . $news->thumbnail_url) }}" alt="Current Thumbnail" class="w-64 h-40 object-cover rounded-lg border-2 border-gray-300">
+                        @else
+                        <div class="w-64 h-40 bg-gray-100 rounded-lg flex items-center justify-center">
+                            <span class="text-gray-400 text-sm">Belum ada gambar</span>
+                        </div>
+                        @endif
+                    </div>
+                </div>
 
-            <!-- New Thumbnail -->
-            <div class="mb-6">
-                <label for="thumbnail" class="block text-sm font-medium text-gray-700 mb-2">Ganti Thumbnail (Opsional)</label>
-                <input type="file" name="thumbnail" id="thumbnail" accept="image/*" 
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 @error('thumbnail') border-red-500 @enderror">
-                <p class="text-sm text-gray-500 mt-1">Format: JPG, PNG, GIF (Max 2MB)</p>
+                <!-- New Image Preview -->
+                <div id="newImagePreview" class="mb-4 hidden">
+                    <p class="text-sm text-gray-600 mb-2 font-medium">Preview Gambar Baru:</p>
+                    <div class="relative inline-block">
+                        <img id="preview" src="" alt="Preview" class="w-64 h-40 object-cover rounded-lg border-2 border-green-500">
+                        <button type="button" onclick="removeNewImage()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600">
+                            ×
+                        </button>
+                    </div>
+                </div>
+
+                <!-- File Input -->
+                <div class="mt-3">
+                    <label for="thumbnail" class="cursor-pointer inline-block">
+                        <span class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 inline-block">
+                            {{ $news->thumbnail_url ? 'Ganti Gambar' : 'Upload Gambar' }}
+                        </span>
+                    </label>
+                    <input type="file" name="thumbnail" id="thumbnail" accept="image/*" 
+                           class="hidden"
+                           onchange="previewNewImage(event)">
+                    <p class="text-sm text-gray-500 mt-2">Format: JPG, PNG, GIF | Maksimal: 2MB | Ukuran rekomendasi: 1200x800px</p>
+                    <p class="text-sm text-yellow-600 mt-1">Jika upload gambar baru, gambar lama akan otomatis tergantikan</p>
+                </div>
                 @error('thumbnail')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
+
+            <script>
+            function previewNewImage(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('preview').src = e.target.result;
+                        document.getElementById('newImagePreview').classList.remove('hidden');
+                        document.getElementById('currentImage').classList.add('opacity-50');
+                    }
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            function removeNewImage() {
+                document.getElementById('thumbnail').value = '';
+                document.getElementById('newImagePreview').classList.add('hidden');
+                document.getElementById('preview').src = '';
+                document.getElementById('currentImage').classList.remove('opacity-50');
+            }
+            </script>
 
             <!-- Published At -->
             <div class="mb-6">

@@ -83,7 +83,7 @@
     <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
         <!-- Thumbnail -->
         @if($item->thumbnail_url)
-            <img src="{{ asset('storage/' . $item->thumbnail_url) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover">
+            <img src="{{ url('storage/' . $item->thumbnail_url) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover" onerror="this.parentElement.innerHTML='<div class=\'w-full h-48 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center\'><span class=\'text-white text-4xl\'>🌱</span></div>'">
         @else
             <div class="w-full h-48 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
                 <span class="text-white text-4xl">🌱</span>
