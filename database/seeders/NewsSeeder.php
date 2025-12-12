@@ -12,13 +12,16 @@ class NewsSeeder extends Seeder
      */
     public function run(): void
     {
+        // Hapus semua berita lama jika ada
+        News::truncate();
+
         $newsData = [
             [
                 'title' => 'Program Bank Sampah Nasional Tingkatkan Partisipasi Warga',
                 'summary' => 'Program Bank Sampah Nasional berhasil meningkatkan partisipasi masyarakat dalam pengelolaan sampah di berbagai daerah dengan melibatkan lebih dari 5.000 bank sampah aktif.',
                 'content' => 'Program Bank Sampah Nasional yang diluncurkan pemerintah berhasil meningkatkan partisipasi warga dalam pengelolaan sampah. Hingga saat ini, tercatat lebih dari 5.000 bank sampah telah beroperasi di seluruh Indonesia dengan melibatkan jutaan warga. Program ini tidak hanya membantu mengurangi volume sampah, tetapi juga memberikan nilai ekonomis bagi masyarakat. Warga dapat menukarkan sampah yang telah dipilah dengan uang atau barang kebutuhan sehari-hari. Keberhasilan program ini menunjukkan bahwa dengan edukasi dan sistem yang tepat, masyarakat dapat berperan aktif dalam menjaga lingkungan.',
                 'category' => 'Pengelolaan Sampah',
-                'thumbnail_url' => null,
+                'thumbnail_url' => 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=600&h=400&fit=crop',
                 'published_at' => now()->subDays(rand(1, 30)),
             ],
             [
@@ -26,7 +29,7 @@ class NewsSeeder extends Seeder
                 'summary' => 'Kampanye pemilahan sampah di beberapa kota besar Indonesia berhasil mengurangi sampah plastik hingga 40 persen.',
                 'content' => 'Kampanye pemilahan sampah yang dilakukan selama 6 bulan terakhir di Jakarta, Surabaya, dan Bandung menunjukkan hasil menggembirakan. Data menunjukkan pengurangan sampah plastik hingga 40% setelah masyarakat aktif memilah sampah organik dan anorganik. Pemerintah daerah memberikan apresiasi kepada kelurahan-kelurahan yang berhasil menerapkan program ini dengan baik. Pemilahan sampah dari sumbernya terbukti efektif mengurangi beban TPA dan memudahkan proses daur ulang. Program ini akan terus dikembangkan ke kota-kota lain di Indonesia.',
                 'category' => 'Daur Ulang',
-                'thumbnail_url' => null,
+                'thumbnail_url' => 'https://picsum.photos/600/400?random=2',
                 'published_at' => now()->subDays(rand(1, 30)),
             ],
             [
