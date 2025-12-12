@@ -15,6 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \Illuminate\Http\Middleware\HandleCors::class,
         ]);
+
+        // Register API middleware
+        $middleware->api(append: [
+            \App\Http\Middleware\ApiAccessLogger::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
